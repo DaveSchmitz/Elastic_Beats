@@ -1,0 +1,58 @@
+***************************************************************************************************
+Date/Time:      10/03/2018 14:58:07
+Job Name:       Start_EPMT_Services
+Environment:    DEV
+User Name:      Administrator
+Machine Name:   WIN-S9BEJAM0KRG
+***************************************************************************************************
+***************************************************************************************************
+
+14:58:07.729  I [00:00:00:609] Beginning Job to Restart Mid-Tier Services and Rebuild MMM.
+14:58:07.791  I [00:00:00:062]    Stoping JDABIApplicationServer
+14:58:07.823  I [00:00:00:031] Service status for JDABIApplicationServer was switched from Running to Stopped
+14:58:07.838  I [00:00:00:015]    Stoping JDAEKBStructureFactsSynchronizationService
+14:58:08.104  I [00:00:00:265] Service status for JDAEKBStructureFactsSynchronizationService was switched from Running to Stopped
+14:58:08.104  I [00:00:00:000]    Stoping JDAEKBStructureCacheService
+14:58:08.385  I [00:00:00:281] Service status for JDAEKBStructureCacheService was switched from Running to Stopped
+14:58:08.385  I [00:00:00:000]    Stoping JDAEKBStructureService
+14:58:09.199  I [00:00:00:813] Service status for JDAEKBStructureService was switched from Running to Stopped
+14:58:09.199  I [00:00:00:000]    Stoping JDABIMessageLog
+14:58:09.479  I [00:00:00:280] Service status for JDABIMessageLog was switched from Running to Stopped
+14:58:09.495  I [00:00:00:000] ---Delete the MMM
+14:58:09.495  I [00:00:00:015] ---Reset IIS
+14:58:09.511  I [00:00:00:016] ---------------------------------------------------------------------------------------------------
+14:58:09.511  I [00:00:00:000] ---------------------------------------------------------------------------------------------------
+14:58:09.526  I [00:00:00:014] Executing:  iisreset  
+14:58:09.526  I [00:00:00:000] ---------------------------------------------------------------------------------------------------
+
+Attempting stop...
+
+Internet services successfully stopped
+
+Attempting start...
+
+Internet services successfully restarted
+
+
+14:58:16.854  I [00:00:07:328] ---------------------------------------------------------------------------------------------------
+14:58:16.901  I [00:00:00:047] Command completed successfully with return code 0
+14:58:16.917  D [00:00:00:015] Additional Info from Standard Error Object: 
+14:58:16.932  I [00:00:00:015] ---Start the services
+14:58:16.932  I [00:00:00:000] Service status for JDABIMessageLog is already Running.  Status does not need to Start.
+14:58:16.948  I [00:00:00:015] Service status for JDAEKBStructureService is already Running.  Status does not need to Start.
+14:58:17.260  I [00:00:00:312] Service status for JDAEKBStructureCacheService was switched from Stopped to Running
+14:58:17.557  I [00:00:00:297] Service status for JDAEKBStructureFactsSynchronizationService was switched from Stopped to Running
+14:58:17.557  I [00:00:00:000] Service status for JDABIApplicationServer is already Running.  Status does not need to Start.
+14:58:17.572  I [00:00:00:014] ---Check for MMM
+15:02:37.808  I [00:04:20:235] MMM Date Time Stamp: 10/03/2018 15:02:31
+15:02:37.823  I [00:00:00:015] The process completed succuessfully and will exit with a status of zero (0)
+
+***************************************************************************************************
+10/03/2018 15:02:37 Finished processing
+Total Run Time:  [00:04:30]
+Records Processed:  [-999]
+Run Status:  Successful
+***************************************************************************************************
+15:02:37.824  I [00:00:00:015] The Dave
+15:02:37.825  I [00:00:00:015] The Dave2
+15:02:37.826  E [00:00:00:015] The Dave3

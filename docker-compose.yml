@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+#-------------
+  elasticsearch:
+    container_name: elasticsearch
+    build: ./config/elasticsearch/
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports: ['9200:9200']
+    healthcheck:
+      test: ["CMD", "curl","-s" ,"-f", "http://localhost:9200/_cat/health"]
+    networks: ['stack']
+  kibana:
+    container_name: kibana
+    hostname: kibana
+    build: ./config/kibana/
+    ports: ['5601:5601']
+    networks: ['stack']
+    depends_on:
+      - elasticsearch
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/"]
+      retries: 6
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.0.1
+    container_name: filebeat
+    hostname: filebeat
+    user: root 
+    volumes:
+      #Mount the log directory of the application we are monitoring:
+      - /d/app/DaveAdmin/diag/rdbms/orcl/orcl/trace/:/usr/share/ora_trc/
+      #This is used to persist the registry file between restarts of the container, so to avoid data duplication in es.
+      - /d/es_data/filebeat/data:/usr/share/data/filebeat/registry
+      #This is used to point the contianer to the yml file directory
+      - ./config/filebeat/:/usr/share/fb_config/
+      #Allows us to report on docker from the hosts information.
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks: ['stack']
+    command: filebeat -e -strict.perms=false -c /usr/share/fb_config/filebeat.yml
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+  volumes: 
+  esdata:
+    driver: local
+  filebeatdata:
+    driver: local  
+networks: {stack: {}}

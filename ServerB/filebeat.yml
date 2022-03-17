@@ -1,0 +1,295 @@
+# app.date
+# app.time
+# app.level
+# app.environment
+# app.user
+# app.host
+# app.node
+# app.application
+# app.module
+# app.process
+# app.section
+# app.message
+# app.err_nbr
+# app.err_desc
+# app.ut
+
+# ============================== Filebeat inputs ===============================
+filebeat.registry.path: C:/ProgramData/Elastic/Beats/filebeat/data/registry_
+
+filebeat.inputs:
+- type: filestream
+  processors:
+    # This will parse the Planning.log files in the Personal directory
+    #I,42:0,InitInstance,01/18/2022,14:18:27,PLANNING_USER,Planning.ini location: 'C:\Users\dbrown\WINDOWS\planning.ini'
+    - dissect:
+        field: "message"
+        tokenizer: "%{app.level},%{},%{app.module},%{app.date},%{app.date},%{},%{app.message}"
+        target_prefix: ""
+    - dissect:
+        field: "log.file.path"
+        tokenizer: "%{}:\\%{}\\%{}\\%{}\\%{app.user}\\%{}"
+        target_prefix: ""
+    - add_fields:
+        target: ""
+        fields:
+          #app.date: ""
+          #app.time: ""
+          #app.level: ""
+          app.environment: "DEV"
+          #app.user: ""
+          app.host: ""
+          app.node: ""
+          app.application: "Planning"
+          #app.module: ""
+          #app.process: ""
+          app.section: ""
+          #app.message: ""
+          app.err_nbr: ""
+          app.err_desc: ""
+          app.ut: ""
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - Z:/Toolkit/Dev/Personal/*/Planning.log
+
+- type: filestream
+  processors:
+    #- add_host_metadata: ~
+    - dissect:
+        field: "message"
+        tokenizer: "%{app.date} %{app.time} %{app.ampm} %{app.level} %{app.message}"
+        target_prefix: ""
+    - dissect:
+        field: "log.file.path"
+        tokenizer: "%{}:\\%{}\\%{}\\%{}\\%{app.user}\\%{}\\%{app.process}.%{}"
+        target_prefix: ""
+    - add_fields:
+        target: ""
+        fields:
+          #app.date: ""
+          #app.time: ""
+          #app.level: ""
+          app.environment: "DEV"
+          #app.user: ""
+          app.host: ""
+          app.node: ""
+          app.application: "Toolkit"
+          app.module: ""
+          #app.process: ""
+          app.section: ""
+          #app.message: ""
+          app.err_nbr: ""
+          app.err_desc: ""
+          app.ut: ""
+  enabled: true
+  
+  # Paths that should be crawled and fetched. Glob based paths.
+  #Z:\Toolkit\Dev\Personal\janderson\Logs
+  paths:
+    - Z:/Toolkit/Dev/Personal/*/Logs/*.log
+    
+- type: filestream
+# This will parse the pkbf.log file
+#I,4:10008,PKBFDATRM v2020.1.0.6246 Server WIN-SBECOBS75QI,11700,03/07/2022,09:09:02,2022-03-07 15:09:02 UT,ekb,WIN-SBECOBS75QI,Start processing:  pkbfdatrm / ftf=PL_OTLOP empty=y type=all 
+#I,4:10009,PKBFDATRM,12052,03/07/2022,09:09:00,2022-03-07 15:09:00 UT,ekb,WIN-SBECOBS75QI,Status:  Process completed successfully
+  processors:
+    - dissect:
+        field: "message"
+        tokenizer: "%{app.level},%{},%{app.process},%{},%{app.date},%{app.time},%{app.ut},%{app.user},%{app.host},%{app.message}"
+        target_prefix: ""
+    - add_fields:
+        target: ""
+        fields:
+          #app.date: ""
+          #app.time: ""
+          #app.level: ""
+          app.environment: "DEV"
+          #app.user: ""
+          app.host: ""
+          app.node: ""
+          app.application: "EKB"
+          app.module: ""
+          #app.process: ""
+          app.section: ""
+          #app.message: ""
+          app.err_nbr: ""
+          app.err_desc: ""
+          app.ut: ""
+  enabled: true
+  paths:
+    - C:\ProgramData\JDA\EKB\Foundation\log\pkbf.log
+    
+- type: filestream
+  processors:
+    # This will parse the Powershell EKB Batch logs
+    #11:10:30.360  I [00:00:01:604] Execute:    powershell -ExecutionPolicy Bypass -File "C:\EPBatch\MidTier_Restart.ps1"
+    - dissect:
+        field: "message"
+        tokenizer: "%{app.time}  %{app.level} %{} %{app.message}"
+        target_prefix: ""
+    - dissect:
+        field: "log.file.path"
+        tokenizer: "%{}:\\%{}\\%{}\\%{app.process}.%{}"
+        target_prefix: ""
+    - add_fields:
+        target: ""
+        fields:
+          #app.date: ""
+          #app.time: ""
+          #app.level: ""
+          app.environment: "DEV"
+          #app.user: ""
+          app.host: ""
+          app.node: ""
+          app.application: "Backend Batch"
+          #app.module: ""
+          #app.process: ""
+          app.section: ""
+          #app.message: ""
+          app.err_nbr: ""
+          app.err_desc: ""
+          app.ut: ""
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - C:/EPBatch/log/*.log
+
+  
+- type: filestream
+  processors:
+    # This will parse the Powershell EKB Batch logs
+    #[Thu Mar 10 08:20:35.683 2022] 0x8eff8030 tid=13fc :EqlDsGetVersion:Thread start failed returning error 1019
+    - dissect:
+        field: "message"
+        tokenizer: "%{} %{tmpMonth} %{tmpDay} %{app.time} %{tmpYear}] %{app.process} %{app.section} %{app.message}"
+        target_prefix: ""
+    - add_fields:
+        target: ""
+        fields:
+          #app.date: ""
+          #app.time: ""
+          app.level: "E"
+          app.environment: "DEV"
+          app.user: ""
+          app.host: ""
+          app.node: ""
+          app.application: "MidTier"
+          app.module: "6"
+          #app.process: ""
+          #app.section: ""
+          #app.message: ""
+          app.err_nbr: ""
+          app.err_desc: ""
+          app.ut: ""
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - C:/Program Files/JDA/EPMidTier/bin/pkbds.log
+  include_lines: ['error']
+
+# ============================== Filebeat modules ==============================
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+  # Period on which files under path should be checked for changes
+  #reload.period: 10s
+
+# ======================= Elasticsearch template setting =======================
+
+setup.template.settings:
+  index.number_of_shards: 1
+  #index.codec: best_compression
+  #_source.enabled: false
+
+
+# ================================== General ===================================
+
+# The name of the shipper that publishes the network data. It can be used to group
+# all the transactions sent by a single shipper in the web interface.
+#name:
+
+# The tags of the shipper are included in their own field with each
+# transaction published.
+#tags: ["service-X", "web-tier"]
+
+# Optional fields that you can specify to add additional information to the
+# output.
+#fields:
+#  env: staging
+
+# ================================= Dashboards =================================
+# These settings control loading the sample dashboards to the Kibana index. Loading
+# the dashboards is disabled by default and can be enabled either by setting the
+# options here or by using the `setup` command.
+#setup.dashboards.enabled: false
+
+# The URL from where to download the dashboards archive. By default this URL
+# has a value which is computed based on the Beat name and version. For released
+# versions, this URL points to the dashboard archive on the artifacts.elastic.co
+# website.
+#setup.dashboards.url:
+
+# =================================== Kibana ===================================
+
+# Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
+# This requires a Kibana endpoint configuration.
+setup.kibana:
+
+  # Kibana Host
+  # Scheme and port can be left out and will be set to the default (http and 5601)
+  # In case you specify and additional path, the scheme is required: http://localhost:5601/path
+  # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
+  host: "192.168.0.136:5601"
+
+  # Kibana Space ID
+  # ID of the Kibana Space into which the dashboards should be loaded. By default,
+  # the Default Space will be used.
+  #space.id:
+
+# ================================== Outputs ===================================
+
+# Configure what output to use when sending the data collected by the beat.
+
+# ---------------------------- Elasticsearch Output ----------------------------
+#output.logstash:
+#  hosts: ["192.168.0.136:5044"]
+  
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["192.168.0.136:9200"]
+  pipeline: log-helper-pipeline
+  # Protocol - either `http` (default) or `https`.
+  #protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  #api_key: "id:api_key"
+  #username: "elastic"
+  #password: "changeme"
+
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  #- add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  #- add_kubernetes_metadata: ~
+
+# ================================== Logging ===================================
+
+# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+logging.level: debug
+
+# At debug level, you can selectively enable logging only for some components.
+# To enable all selectors use ["*"]. Examples of other selectors are "beat",
+# "publisher", "service".
+logging.selectors: ["*"]

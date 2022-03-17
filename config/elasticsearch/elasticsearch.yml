@@ -1,0 +1,10 @@
+cluster.name: elastic-cluster
+node.name: node-1
+path.data: /usr/share/elasticsearch/data
+http.port: 9200
+network.host: 0.0.0.0
+ingest.geoip.downloader.enabled: false
+xpack.security.enabled: false
+#xpack.security.enabled: false
+#index.number_of_shards: 1
+#index.number_of_replicas: 0
