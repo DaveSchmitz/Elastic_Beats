@@ -118,6 +118,6 @@ Error Messages:
 <img src="./readme_images/ErrMsg.jpg" width="100%" height="100%">  
 
 
-Additionally, Business Admins can also setup dashboards to view user activity based on user specific logs.  For example this dashboard shows which users have performed a particular ("Ready For Review") activity in the application today:
+Additionally, Business Admins can also setup dashboards to view user activity based on user specific logs.  For example this dashboard shows which users have performed a particular activity ("Ready For Review") in the application today:
 
 <img src="./readme_images/UsersReady.jpg" width="100%" height="100%"> 
