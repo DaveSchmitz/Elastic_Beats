@@ -1,4 +1,4 @@
-# Wrangling logs in legacy environments  <p>
+# Managing logs in legacy environments  <p>
 ## Overview  <p>
 I have been implementing a back-office Merchandise Planning system for 20+ years now. You can imagine it has gone through quite a few revisions in that time. It is a fairly standard 3 tier architecture with an Oracle database backend, mid-tier application server, and the client front end. As much as I have grown to love this application, the logging in this landscape has become tricky due to <li>Number of applications <li> No standard location <li> No standard format of the logs.  <p>
 
@@ -121,3 +121,10 @@ Error Messages:
 Additionally, Business Admins can also setup dashboards to view user activity based on user specific logs.  For example this dashboard shows which users have performed a particular activity ("Ready For Review") in the application today:
 
 <img src="./readme_images/UsersReady.jpg" width="100%" height="100%"> 
+  
+## Conclusion
+
+Some last points that I just wanted to highlight:
+  * Use the Docker Images as much as possible.  Keep it simple for yourself
+  * If you don't need to do heavy transformation, skip using Logstash and try just using Filebeat or Elasticsearch pipelines
+  * The dashboards don't have to just be just for system feedback. The dashboards can provide your users/business admins some feedback as well from the content of the logs.
